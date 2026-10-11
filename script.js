@@ -60,9 +60,23 @@ function render() {
 form.addEventListener("submit", function (event) {
     event.preventDefault();
 
+    const text = noteInput.value.trim();
+
+    if (text === "") {
+        errorMessage.textContent = "Please type a note first.";
+        return;
+    }
+
+    if (text.length > 200) {
+        errorMessage.textContent = "Notes must be 200 characters or fewer.";
+        return;
+    }
+
+    errorMessage.textContent = "";
+
     const note = {
         id: Date.now(),
-        text: noteInput.value.trim(),
+        text: text,
         category: categorySelect.value,
         createdAt: new Date().toLocaleString(),
     };
@@ -73,5 +87,30 @@ form.addEventListener("submit", function (event) {
     noteInput.value = "";
     noteInput.focus();
 });
+function updateCount() {
+    if (notes.length === 0) {
+        noteCount.textContent = "You have no notes yet.";
+    } else if (notes.length === 1) {
+        noteCount.textContent = "You have 1 note.";
+    } else {
+        noteCount.textContent = `You have ${notes.length} notes.`;
+    }
+}
+function render () {
+    updateCount();
+    notesList.replaceChildren();
+    for (const note of notes) {
+        notesList.append(createNoteElement(note));
+    }
+}
+function deleteNote(id) {
+    notes = notes.filter((note) => note.id !== id);
+    render();
+}
 
-render();
+notesList.addEventListener("click", function (event) {
+    if (event.target.classList.contains("delete-btn")) {
+        deleteNote(Number(event.target.dataset.id));
+    }
+});
+render ();
