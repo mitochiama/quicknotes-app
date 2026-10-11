@@ -193,3 +193,8 @@ footer {
     align-items: flex-start;
   }
 }
+#clear-all-btn {
+  margin-bottom: 12px;
+  background-color: #d11616;
+  border-color: #c62828;
+}

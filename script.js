@@ -158,6 +158,19 @@ function loadNotes() {
     return [];
   }
 }
+const clearAllBtn = document.getElementById("clear-all-btn");
+
+clearAllBtn.addEventListener("click", function () {
+  if (notes.length === 0) {
+    return;
+  }
+
+  if (confirm("Delete all notes?")) {
+    notes = [];
+    saveNotes();
+    render();
+  }
+});
 searchInput.addEventListener("input", render);
 
 notes = loadNotes();
